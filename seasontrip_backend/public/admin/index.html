@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SeasonTrip 后台管理</title>
+  <style>
+    :root{--bg:#f4f5f1;--paper:#fffdf8;--ink:#18211d;--muted:#68736d;--line:#dde3dc;--accent:#214c40;--danger:#a74d3f}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Microsoft YaHei",sans-serif}
+    header{height:68px;background:rgba(255,253,248,.9);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:5}
+    .brand{font-weight:800}.user{display:flex;align-items:center;gap:10px}.logout{border:1px solid var(--line);background:white;border-radius:10px;padding:8px 12px;cursor:pointer}
+    .layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 68px)}
+    aside{border-right:1px solid var(--line);background:#f8f8f4;padding:18px}
+    .navbtn{display:block;width:100%;text-align:left;border:0;background:transparent;padding:12px 14px;border-radius:11px;cursor:pointer;margin-bottom:5px}
+    .navbtn.active{background:var(--accent);color:white}
+    main{padding:28px;max-width:1200px;width:100%}
+    .top{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:20px}.title{font-size:28px;font-weight:800}.desc{color:var(--muted);font-size:13px}
+    .panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:20px}
+    table{width:100%;border-collapse:collapse}th,td{padding:12px;border-bottom:1px solid #e8ece6;text-align:left;font-size:13px;vertical-align:top}th{font-size:12px;color:var(--muted)}
+    .actions{display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;padding:8px 11px;border-radius:9px;cursor:pointer}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.danger{color:#fff;background:var(--danger);border-color:var(--danger)}
+    .modal{position:fixed;inset:0;background:rgba(13,20,17,.38);display:none;place-items:center;z-index:20}.modal.open{display:grid}.dialog{width:min(720px,calc(100% - 30px));background:#fffdf8;border-radius:20px;padding:22px;max-height:90vh;overflow:auto}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:700}input,textarea,select{padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff}textarea{min-height:90px;resize:vertical}
+    .modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+    .toast{position:fixed;right:22px;bottom:22px;background:#18211d;color:white;padding:11px 15px;border-radius:10px;display:none;z-index:50}.toast.show{display:block}
+    @media(max-width:800px){.layout{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line);display:flex;gap:6px;overflow:auto}.navbtn{white-space:nowrap;width:auto}.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand">SeasonTrip · Admin CMS</div>
+  <div class="user"><span id="who"></span><button class="logout" id="logout">退出登录</button></div>
+</header>
+<div class="layout">
+  <aside>
+    <button class="navbtn active" data-resource="market">旅游市场</button>
+    <button class="navbtn" data-resource="trends">季节趋势</button>
+    <button class="navbtn" data-resource="destinations">目的地</button>
+    <button class="navbtn" data-resource="guides">旅行攻略</button>
+  </aside>
+  <main>
+    <div class="top">
+      <div>
+        <div class="title" id="pageTitle">旅游市场</div>
+        <div class="desc">管理前台网站展示的数据。</div>
+      </div>
+      <button class="btn primary" id="addBtn">新增</button>
+    </div>
+    <div class="panel"><div id="tableWrap">加载中...</div></div>
+  </main>
+</div>
+
+<div class="modal" id="modal">
+  <div class="dialog">
+    <div style="font-size:20px;font-weight:800" id="modalTitle">新增</div>
+    <form id="editForm"></form>
+    <div class="modal-footer">
+      <button class="btn" id="cancel">取消</button>
+      <button class="btn primary" id="save">保存</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const configs={
+ market:{
+   title:'旅游市场',
+   columns:[['label','指标'],['value','数值'],['trend','变化'],['tone','方向']],
+   fields:[
+     ['label','指标名称','text'],['value','数值','text'],['trend','变化说明','text'],['tone','方向','select','up|down']
+   ]
+ },
+ trends:{
+   title:'季节趋势',
+   columns:[['season','季节'],['subtitle','说明'],['tag','标签']],
+   fields:[
+     ['season','季节 key','text'],['subtitle','副标题','text'],['tag','标签','text'],
+     ['points','热度数据 JSON','textarea'],['labels','月份标签 JSON','textarea'],['insights','洞察 JSON','textarea']
+   ]
+ },
+ destinations:{
+   title:'目的地',
+   columns:[['name','名称'],['rating','评分'],['description','描述'],['tags','标签']],
+   fields:[
+     ['name','名称','text'],['rating','评分','number'],['description','描述','textarea'],['image','图片 URL','text'],['tags','标签 JSON','textarea']
+   ]
+ },
+ guides:{
+   title:'旅行攻略',
+   columns:[['title','标题'],['category','分类'],['meta','信息'],['published','发布']],
+   fields:[
+     ['type','类型','text'],['category','分类','select','city|nature|food|budget'],
+     ['title','标题','text'],['description','描述','textarea'],['meta','信息','text'],['published','发布','select','1|0']
+   ]
+ }
+};
+
+let resource='market', editingId=null;
+const title=document.getElementById('pageTitle');
+const tableWrap=document.getElementById('tableWrap');
+const modal=document.getElementById('modal');
+const form=document.getElementById('editForm');
+
+async function api(url, options={}){
+  const res=await fetch(url,{credentials:'include',...options});
+  const data=await res.json().catch(()=>({}));
+  if(res.status===401){location.href='/admin/login.html';throw new Error('未登录');}
+  if(!res.ok) throw new Error(data.message||'请求失败');
+  return data;
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function safe(v){return String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;')}
+
+async function load(){
+  title.textContent=configs[resource].title;
+  const data=(await api('/api/admin/'+resource)).data;
+  tableWrap.innerHTML='<table><thead><tr>'+
+    configs[resource].columns.map(c=>`<th>${c[1]}</th>`).join('')+
+    '<th>操作</th></tr></thead><tbody>'+
+    data.map(row=>`<tr>${configs[resource].columns.map(c=>`<td>${safe(Array.isArray(row[c[0]])?row[c[0]].join('、'):row[c[0]])}</td>`).join('')}
+    <td><div class="actions"><button class="btn" onclick='openEdit(${JSON.stringify(row)})'>编辑</button><button class="btn danger" onclick="removeItem(${row.id})">删除</button></div></td></tr>`).join('')+
+    '</tbody></table>';
+}
+
+function openEdit(row=null){
+  editingId=row?.id||null;
+  document.getElementById('modalTitle').textContent=editingId?'编辑':'新增';
+  form.innerHTML='<div class="grid">'+configs[resource].fields.map(([key,label,type,opts])=>{
+    let v=row?.[key]??'';
+    if(Array.isArray(v)) v=JSON.stringify(v);
+    if(typeof v==='object'&&v!==null) v=JSON.stringify(v);
+    const control=type==='textarea'
+      ? `<textarea id="f_${key}" data-key="${key}">${safe(v)}</textarea>`
+      : type==='select'
+        ? `<select id="f_${key}" data-key="${key}">${opts.split('|').map(o=>`<option value="${o}" ${String(v)===o?'selected':''}>${o}</option>`).join('')}</select>`
+        : `<input id="f_${key}" data-key="${key}" type="${type}" value="${safe(v)}">`;
+    return `<div class="field ${type==='textarea'?'full':''}"><label>${label}</label>${control}</div>`
+  }).join('')+'</div>';
+  modal.classList.add('open');
+}
+document.getElementById('cancel').onclick=(e)=>{e.preventDefault();modal.classList.remove('open')};
+document.getElementById('save').onclick=async(e)=>{
+  e.preventDefault();
+  try{
+    const body={};
+    configs[resource].fields.forEach(([key,label,type])=>{
+      let v=document.getElementById('f_'+key).value;
+      if(['points','labels','insights','tags'].includes(key)){
+        try{v=JSON.parse(v||'[]')}catch{throw new Error(`${label} 必须是合法 JSON`)}
+      }
+      if(['rating'].includes(key)) v=Number(v);
+      if(key==='published') v=Number(v);
+      body[key]=v;
+    });
+    const method=editingId?'PUT':'POST';
+    const url='/api/admin/'+resource+(editingId?`/${editingId}`:'');
+    await api(url,{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    modal.classList.remove('open');toast('保存成功');await load();
+  }catch(err){alert(err.message)}
+};
+
+window.openEdit=openEdit;
+window.removeItem=async(id)=>{
+  if(!confirm('确定删除这条记录吗？')) return;
+  try{await api(`/api/admin/${resource}/${id}`,{method:'DELETE'});toast('已删除');load()}catch(err){alert(err.message)}
+};
+
+document.querySelectorAll('.navbtn').forEach(btn=>btn.onclick=()=>{
+  document.querySelectorAll('.navbtn').forEach(x=>x.classList.remove('active'));
+  btn.classList.add('active');resource=btn.dataset.resource;load();
+});
+document.getElementById('addBtn').onclick=()=>openEdit();
+document.getElementById('logout').onclick=async()=>{await api('/api/auth/logout',{method:'POST'});location.href='/admin/login.html'};
+
+(async()=>{
+  try{
+    const me=await api('/api/auth/me');
+    document.getElementById('who').textContent=`管理员：${me.user.username}`;
+    load();
+  }catch{}
+})();
+</script>
+</body>
+</html>

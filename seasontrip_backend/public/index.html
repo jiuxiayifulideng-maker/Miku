@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SeasonTrip 旅游趋势与目的地攻略网站" />
+  <title>SeasonTrip · 旅行趋势与目的地指南</title>
+  <style>
+    :root{
+      --bg:#f5f3ed;
+      --paper:#fffdf8;
+      --ink:#18211d;
+      --muted:#6c746f;
+      --line:#dfe3dc;
+      --accent:#214c40;
+      --accent-2:#d47b4e;
+      --mint:#dcebe3;
+      --sand:#efe7d7;
+      --shadow:0 18px 50px rgba(24,33,29,.08);
+      --radius:24px;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 15% 0%, rgba(220,235,227,.9), transparent 27%),
+        radial-gradient(circle at 100% 20%, rgba(239,231,215,.9), transparent 30%),
+        var(--bg);
+      font-family: Inter, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height:1.65;
+    }
+    a{text-decoration:none;color:inherit}
+    button,input{font:inherit}
+    .container{width:min(var(--max), calc(100% - 40px));margin:auto}
+    .topbar{
+      position:sticky;top:0;z-index:30;
+      background:rgba(245,243,237,.82);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(223,227,220,.75);
+    }
+    .nav{
+      height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.04em}
+    .brand-mark{
+      width:34px;height:34px;border-radius:12px;background:var(--accent);
+      position:relative;display:grid;place-items:center;color:#fff;font-size:15px;
+      box-shadow:0 8px 20px rgba(33,76,64,.22)
+    }
+    .brand-mark:after{content:"✦";transform:translateY(-1px)}
+    .navlinks{display:flex;gap:26px;color:#55605a;font-size:14px}
+    .navlinks a:hover{color:var(--accent)}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .btn{
+      border:1px solid var(--line);background:var(--paper);color:var(--ink);
+      padding:11px 16px;border-radius:999px;cursor:pointer;transition:.2s
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(24,33,29,.08)}
+    .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .mobile-menu{display:none}
+    .hero{padding:70px 0 40px}
+    .hero-grid{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;color:var(--accent);
+      font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em
+    }
+    .eyebrow:before{content:"";width:30px;height:1px;background:var(--accent)}
+    h1{font-size:clamp(42px,6vw,78px);line-height:1.03;letter-spacing:-.04em;margin:16px 0 20px}
+    .hero p{font-size:18px;color:var(--muted);max-width:640px;margin:0 0 28px}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:12px}
+    .mini-stats{display:flex;gap:30px;margin-top:30px;flex-wrap:wrap}
+    .mini-stat strong{display:block;font-size:27px;line-height:1.1}
+    .mini-stat span{color:var(--muted);font-size:13px}
+    .hero-card{
+      background:var(--accent);border-radius:34px;padding:22px;color:#fff;
+      box-shadow:var(--shadow);min-height:470px;position:relative;overflow:hidden
+    }
+    .hero-card:before,.hero-card:after{content:"";position:absolute;border-radius:50%;filter:blur(2px)}
+    .hero-card:before{width:320px;height:320px;background:rgba(114,165,143,.3);right:-90px;top:-80px}
+    .hero-card:after{width:240px;height:240px;background:rgba(212,123,78,.25);left:-80px;bottom:-80px}
+    .hero-card-inner{height:100%;position:relative;z-index:2;display:flex;flex-direction:column;justify-content:space-between}
+    .hero-image{
+      height:255px;border-radius:24px;overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(17,30,25,.05), rgba(17,30,25,.48)),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=85") center/cover;
+    }
+    .hero-location{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+    .hero-location h3{margin:0;font-size:26px}
+    .pill{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.14);font-size:12px}
+    .season-nav{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:28px
+    }
+    .season-chip{
+      padding:10px 14px;border-radius:999px;border:1px solid var(--line);background:var(--paper);
+      cursor:pointer;color:#55605a
+    }
+    .season-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    section{padding:72px 0}
+    .section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:24px}
+    .section-head h2{margin:8px 0 0;font-size:38px;letter-spacing:-.03em}
+    .section-head p{margin:0;color:var(--muted);max-width:500px}
+    .trend-layout{display:grid;grid-template-columns:1.3fr .7fr;gap:20px}
+    .panel{
+      background:rgba(255,253,248,.82);border:1px solid rgba(223,227,220,.95);
+      border-radius:var(--radius);box-shadow:var(--shadow);padding:24px
+    }
+    .chart-wrap{height:320px;position:relative}
+    svg{width:100%;height:100%;overflow:visible}
+    .chart-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:6px}
+    .trend-insights{display:grid;gap:14px}
+    .insight{
+      display:flex;gap:14px;padding:15px;border-radius:18px;background:#f4f5ef;border:1px solid #e7ebe3
+    }
+    .insight-icon{width:38px;height:38px;flex:0 0 auto;border-radius:12px;display:grid;place-items:center;background:var(--mint);font-size:18px}
+    .insight b{display:block;margin-bottom:3px}.insight span{font-size:13px;color:var(--muted)}
+    .market-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .market-card{padding:22px;border-radius:20px;background:var(--paper);border:1px solid var(--line)}
+    .market-card .label{color:var(--muted);font-size:13px}
+    .market-value{font-size:34px;font-weight:800;margin:7px 0}
+    .up{color:#2f7d5a}.down{color:#b45d46}
+    .destination-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .dest-card{
+      overflow:hidden;border-radius:24px;background:var(--paper);border:1px solid var(--line);
+      transition:.25s;cursor:pointer
+    }
+    .dest-card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+    .dest-image{height:220px;background-size:cover;background-position:center}
+    .dest-body{padding:18px}
+    .dest-top{display:flex;justify-content:space-between;gap:10px}
+    .dest-top h3{margin:0;font-size:22px}
+    .rating{font-size:13px;color:#9b6a37;white-space:nowrap}
+    .dest-body p{font-size:14px;color:var(--muted);margin:10px 0 14px}
+    .tags{display:flex;gap:8px;flex-wrap:wrap}
+    .tag{background:#eef2ec;padding:6px 9px;border-radius:999px;font-size:11px;color:#57645c}
+    .guides-toolbar{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .tab{border:1px solid var(--line);background:var(--paper);padding:8px 13px;border-radius:999px;cursor:pointer;font-size:13px}
+    .tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .search{
+      position:relative;min-width:260px
+    }
+    .search input{
+      width:100%;padding:11px 15px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(255,255,255,.72);outline:none
+    }
+    .guide-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .guide-card{border-radius:22px;background:var(--paper);border:1px solid var(--line);padding:19px;display:flex;flex-direction:column;min-height:260px}
+    .guide-type{font-size:11px;color:var(--accent);font-weight:800;letter-spacing:.1em}
+    .guide-card h3{font-size:21px;line-height:1.3;margin:10px 0 8px}
+    .guide-card p{font-size:13px;color:var(--muted);margin:0 0 18px}
+    .guide-meta{margin-top:auto;display:flex;justify-content:space-between;color:var(--muted);font-size:12px}
+    .season-box{
+      background:linear-gradient(135deg,#173b32,#2d5e4d);
+      color:white;padding:34px;border-radius:30px;position:relative;overflow:hidden
+    }
+    .season-box:before{content:"";position:absolute;right:-100px;top:-120px;width:340px;height:340px;border:1px solid rgba(255,255,255,.15);border-radius:50%}
+    .season-box-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;position:relative;z-index:2}
+    .season-box h2{margin:0 0 12px;font-size:40px}
+    .season-box p{color:rgba(255,255,255,.75);max-width:580px}
+    .checklist{display:grid;gap:10px}
+    .check-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);padding:12px 14px;border-radius:15px}
+    .check-item i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#b8d3c5;color:#173b32;font-style:normal;font-weight:900}
+    footer{padding:28px 0 40px;color:var(--muted);font-size:13px}
+    .footer-inner{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px}
+    .empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:20px;grid-column:1/-1}
+    @media (max-width: 980px){
+      .hero-grid,.trend-layout,.season-box-grid{grid-template-columns:1fr}
+      .market-grid{grid-template-columns:repeat(2,1fr)}
+      .destination-grid,.guide-grid{grid-template-columns:repeat(2,1fr)}
+      .hero-card{min-height:420px}
+    }
+    @media (max-width: 720px){
+      .navlinks{display:none}
+      .mobile-menu{display:block}
+      .nav-actions .btn.primary{display:none}
+      .hero{padding-top:44px}
+      .mini-stats{gap:22px}
+      .market-grid,.destination-grid,.guide-grid{grid-template-columns:1fr}
+      .section-head{align-items:start;flex-direction:column}
+      .section-head h2{font-size:31px}
+      .search{min-width:100%}
+      .hero-card{min-height:380px}
+      .hero-image{height:210px}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#"><span class="brand-mark"></span>SeasonTrip</a>
+      <nav class="navlinks">
+        <a href="#trends">季节动向</a>
+        <a href="#market">旅游市场</a>
+        <a href="#destinations">热门目的地</a>
+        <a href="#guides">旅行攻略</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn" id="themeBtn">夜间模式</button>
+        <button class="btn primary" onclick="document.querySelector('#guides').scrollIntoView({behavior:'smooth'})">开始规划</button>
+        <button class="btn mobile-menu" onclick="document.querySelector('.navlinks').style.display='flex'">菜单</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Travel intelligence · 2026</div>
+          <h1>让每一次出发，<br><span style="color:var(--accent-2)">都踩在好时节。</span></h1>
+          <p>从季节趋势、市场动向到目的地攻略，把旅行灵感、决策信息和实用路线集中到一个清晰的旅行仪表盘里。</p>
+          <div class="hero-cta">
+            <button class="btn primary" onclick="document.querySelector('#trends').scrollIntoView({behavior:'smooth'})">查看本季趋势</button>
+            <button class="btn" onclick="document.querySelector('#destinations').scrollIntoView({behavior:'smooth'})">探索目的地</button>
+          </div>
+          <div class="mini-stats">
+            <div class="mini-stat"><strong>72%</strong><span>用户关注季节性价比</span></div>
+            <div class="mini-stat"><strong>48</strong><span>精选目的地</span></div>
+            <div class="mini-stat"><strong>126</strong><span>实用旅行攻略</span></div>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-card-inner">
+            <div>
+              <span class="pill">本季推荐 · 轻户外</span>
+              <div class="hero-image" title="山海旅行"></div>
+            </div>
+            <div class="hero-location">
+              <div>
+                <h3>北海道 · 北国初秋</h3>
+                <div style="color:rgba(255,255,255,.7);font-size:13px;margin-top:4px">气温 12–23°C · 人流中等 · 摄影指数 ★★★★★</div>
+              </div>
+              <div style="font-size:28px">↗</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="trends">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">01 · Seasonal pulse</div>
+            <h2>季节动向</h2>
+          </div>
+          <p>通过“热度 + 价格 + 人流”的组合判断，快速找到更适合出发的窗口。</p>
+        </div>
+
+        <div class="season-nav" id="seasonNav">
+          <button class="season-chip active" data-season="summer">夏季</button>
+          <button class="season-chip" data-season="autumn">秋季</button>
+          <button class="season-chip" data-season="winter">冬季</button>
+          <button class="season-chip" data-season="spring">春季</button>
+        </div>
+
+        <div class="trend-layout" style="margin-top:18px">
+          <div class="panel">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+              <div>
+                <div style="font-weight:800;font-size:18px">目的地热度指数</div>
+                <div style="color:var(--muted);font-size:12px" id="trendSubtitle">过去 6 个月的相对热度变化</div>
+              </div>
+              <span class="tag" id="trendTag">旺季 · 注意价格波动</span>
+            </div>
+            <div class="chart-wrap">
+              <svg viewBox="0 0 800 300" preserveAspectRatio="none" aria-label="旅游趋势图">
+                <defs>
+                  <linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#5f8e7c" stop-opacity=".35"/>
+                    <stop offset="100%" stop-color="#5f8e7c" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <g stroke="#e6e9e3" stroke-width="1">
+                  <line x1="30" x2="790" y1="60" y2="60"/>
+                  <line x1="30" x2="790" y1="120" y2="120"/>
+                  <line x1="30" x2="790" y1="180" y2="180"/>
+                  <line x1="30" x2="790" y1="240" y2="240"/>
+                </g>
+                <path id="trendArea" fill="url(#areaFill)" d=""></path>
+                <polyline id="trendLine" fill="none" stroke="#214c40" stroke-width="4" points=""></polyline>
+                <g id="trendDots"></g>
+              </svg>
+            </div>
+            <div class="chart-labels" id="trendLabels"></div>
+          </div>
+
+          <div class="panel trend-insights">
+            <div class="insight"><div class="insight-icon">☀</div><div><b id="insight1Title">沿海度假热度</b><span id="insight1Text">海岛和山海目的地继续保持高热度。</span></div></div>
+            <div class="insight"><div class="insight-icon">¥</div><div><b id="insight2Title">机酒价格</b><span id="insight2Text">提前 21–35 天预订通常更稳妥。</span></div></div>
+            <div class="insight"><div class="insight-icon">◎</div><div><b id="insight3Title">人流变化</b><span id="insight3Text">工作日出发可明显降低核心景区拥挤感。</span></div></div>
+            <div class="insight"><div class="insight-icon">↗</div><div><b id="insight4Title">趋势建议</b><span id="insight4Text">选择“次旺季 + 周中”组合，通常更划算。</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="market">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">02 · Market radar</div>
+            <h2>旅游市场</h2>
+          </div>
+          <p>把市场信息翻译成可执行的旅行决策：预算、热度、人流与停留时间。</p>
+        </div>
+        <div class="market-grid">
+          <div class="market-card"><div class="label">国际出行热度</div><div class="market-value">+18.6%</div><div class="up">↑ 环比增长</div></div>
+          <div class="market-card"><div class="label">平均提前预订</div><div class="market-value">27天</div><div class="up">↑ 适合规划</div></div>
+          <div class="market-card"><div class="label">周末价格溢价</div><div class="market-value">+23%</div><div class="down">↑ 高于工作日</div></div>
+          <div class="market-card"><div class="label">轻户外偏好</div><div class="market-value">64%</div><div class="up">↑ 年轻客群显著</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="destinations">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">03 · Destination</div>
+            <h2>热门目的地</h2>
+          </div>
+          <p>按季节、旅行方式和氛围快速筛选，不只是“哪里热门”，更关心“现在值不值得去”。</p>
+        </div>
+
+        <div class="destination-grid">
+          <article class="dest-card" data-tags="nature autumn japan">
+            <div class="dest-image" style="background-image:linear-gradient(180deg,transparent,rgba(0,0,0,.35)),url('https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?auto=format&fit=crop&w=900&q=85')"></div>
+            <div class="dest-body">
+              <div class="dest-top"><h3>北海道</h3><div class="rating">★★★★★ 4.9</div></div>
+              <p>适合：秋色、咖啡馆、自驾与慢旅行。推荐 5–7 天。</p>
+              <div class="tags"><span class="tag">自然</span><span class="tag">摄影</span><span class="tag">自驾</span></div>
+            </div>
+          </article>
+
+          <article class="dest-card" data-tags="city food asia">
+            <div class="dest-image" style="background-image:linear-gradient(180deg,transparent,rgba(0,0,0,.35)),url('https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=900&q=85')"></div>
+            <div class="dest-body">
+              <div class="dest-top"><h3>京都</h3><div class="rating">★★★★★ 4.8</div></div>
+              <p>适合：古都散步、茶屋、寺院与四季景观。推荐 3–5 天。</p>
+              <div class="tags"><span class="tag">人文</span><span class="tag">美食</span><span class="tag">摄影</span></div>
+            </div>
+          </article>
+
+          <article class="dest-card" data-tags="island relax asia">
+            <div class="dest-image" style="background-image:linear-gradient(180deg,transparent,rgba(0,0,0,.35)),url('https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&w=900&q=85')"></div>
+            <div class="dest-body">
+              <div class="dest-top"><h3>冲绳</h3><div class="rating">★★★★☆ 4.7</div></div>
+              <p>适合：海岛、浮潜、日落与亲子度假。推荐 4–6 天。</p>
+              <div class="tags"><span class="tag">海岛</span><span class="tag">度假</span><span class="tag">亲子</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="guides">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">04 · Travel guides</div>
+            <h2>旅行攻略</h2>
+          </div>
+          <p>把灵感变成出发清单：交通、预算、路线和避坑建议一次看完。</p>
+        </div>
+
+        <div class="guides-toolbar">
+          <div class="tabs" id="guideTabs">
+            <button class="tab active" data-filter="all">全部</button>
+            <button class="tab" data-filter="city">城市</button>
+            <button class="tab" data-filter="nature">自然</button>
+            <button class="tab" data-filter="food">美食</button>
+            <button class="tab" data-filter="budget">预算</button>
+          </div>
+          <div class="search"><input id="searchInput" placeholder="搜索攻略，例如：京都 / 自驾 / 预算" /></div>
+        </div>
+
+        <div class="guide-grid" id="guideGrid"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="season-box">
+          <div class="season-box-grid">
+            <div>
+              <div class="eyebrow" style="color:#b8d3c5">Trip planner</div>
+              <h2>本季出发清单</h2>
+              <p>先决定旅行节奏，再决定目的地。对于跨城或跨国行程，建议先锁定核心活动，再围绕它安排交通和住宿。</p>
+              <button class="btn" style="margin-top:10px;border:0;background:#f4eadc" onclick="window.print()">打印本页攻略</button>
+            </div>
+            <div class="checklist">
+              <div class="check-item"><i>✓</i><span>提前确认天气与季节性活动</span></div>
+              <div class="check-item"><i>✓</i><span>比较工作日与周末价格</span></div>
+              <div class="check-item"><i>✓</i><span>每天只安排 1–2 个核心目的地</span></div>
+              <div class="check-item"><i>✓</i><span>为雨天和临时调整预留 B 方案</span></div>
+              <div class="check-item"><i>✓</i><span>留出 10%–15% 的机动预算</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>© 2026 SeasonTrip · Travel intelligence & guide</div>
+      <div>季节趋势 · 市场洞察 · 目的地 · 旅行攻略</div>
+    </div>
+  </footer>
+
+  <script>
+    const seasonData = {
+      summer:{
+        subtitle:"夏季过去 6 个月的相对热度变化",
+        tag:"旺季 · 注意价格波动",
+        points:[52,58,64,72,86,78],
+        labels:["03月","04月","05月","06月","07月","08月"],
+        i:[["沿海度假热度","海岛和山海目的地继续保持高热度。"],["机酒价格","提前 21–35 天预订通常更稳妥。"],["人流变化","工作日出发可明显降低核心景区拥挤感。"],["趋势建议","选择“次旺季 + 周中”组合，通常更划算。"]]
+      },
+      autumn:{
+        subtitle:"秋季过去 6 个月的相对热度变化",
+        tag:"舒适季 · 性价比提升",
+        points:[76,74,69,66,61,68],
+        labels:["05月","06月","07月","08月","09月","10月"],
+        i:[["红叶目的地","山地、温泉与古都的关注度开始上升。"],["机酒价格","热门红叶区域建议提前 30–45 天锁定。"],["人流变化","10 月下旬通常比黄金周更舒适。"],["趋势建议","把“红叶预测 + 周中出发”作为核心策略。"]]
+      },
+      winter:{
+        subtitle:"冬季过去 6 个月的相对热度变化",
+        tag:"分化季 · 滑雪升温",
+        points:[62,54,48,57,70,79],
+        labels:["07月","08月","09月","10月","11月","12月"],
+        i:[["冰雪目的地","滑雪场、温泉与灯会城市持续升温。"],["机酒价格","节假日期间溢价明显，建议分段比价。"],["人流变化","雪季热门场地周末集中度更高。"],["趋势建议","选择非核心周末，体验与价格更平衡。"]]
+      },
+      spring:{
+        subtitle:"春季过去 6 个月的相对热度变化",
+        tag:"舒适季 · 花季驱动",
+        points:[45,52,59,67,74,69],
+        labels:["11月","12月","01月","02月","03月","04月"],
+        i:[["花季热度","赏樱、花田与郊野轻徒步关注度走高。"],["机酒价格","花期变化大，尽量使用可退改产品。"],["人流变化","核心花季景点的峰值时段更明显。"],["趋势建议","错开周末，把热门景点放到开门前。"]]
+      }
+    };
+
+    const guideData = [
+      {type:"CITY",cat:"city",title:"京都 4 天游：古都散步不走回头路",desc:"清水寺—祇园—哲学之道—岚山，按区域组织路线，减少通勤损耗。",meta:"4天 · 人均 ¥2,800+"},
+      {type:"NATURE",cat:"nature",title:"北海道自驾：7 天山海与温泉线",desc:"适合第一次北海道自驾，覆盖札幌、小樽、美瑛、富良野和温泉区。",meta:"7天 · 自驾"},
+      {type:"FOOD",cat:"food",title:"福冈美食地图：拉面之外吃什么",desc:"屋台、海鲜、烧鸟与咖啡馆，按街区整理高效吃法。",meta:"3天 · 美食"},
+      {type:"BUDGET",cat:"budget",title:"日本旅行预算怎么做：从机票到交通",desc:"给出住宿、交通、餐饮与门票的预算框架，适合第一次规划。",meta:"预算 · 规划"},
+      {type:"CITY",cat:"city",title:"东京周末：雨天也能玩的城市路线",desc:"商圈、展览、书店与室内体验组合，不让天气打乱行程。",meta:"2天 · 城市"},
+      {type:"NATURE",cat:"nature",title:"轻徒步攻略：把景区玩得更慢一点",desc:"从鞋子、补水到节奏控制，适合新手的半日轻徒步方法。",meta:"半日 · 户外"}
+    ];
+
+    let guideFilter = "all";
+    const guideGrid = document.getElementById("guideGrid");
+    const searchInput = document.getElementById("searchInput");
+
+    function renderGuides(){
+      const q = searchInput.value.trim().toLowerCase();
+      const list = guideData.filter(g => {
+        const passCat = guideFilter==="all" || g.cat===guideFilter;
+        const text = `${g.title} ${g.desc} ${g.meta}`.toLowerCase();
+        return passCat && (!q || text.includes(q));
+      });
+      guideGrid.innerHTML = list.length ? list.map(g => `
+        <article class="guide-card">
+          <div class="guide-type">${g.type}</div>
+          <h3>${g.title}</h3>
+          <p>${g.desc}</p>
+          <div class="guide-meta"><span>${g.meta}</span><span>阅读 →</span></div>
+        </article>`).join("") : `<div class="empty">没有找到相关攻略，换个关键词试试。</div>`;
+    }
+
+    document.getElementById("guideTabs").addEventListener("click",(e)=>{
+      if(!e.target.classList.contains("tab")) return;
+      document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+      e.target.classList.add("active");
+      guideFilter=e.target.dataset.filter;
+      renderGuides();
+    });
+    searchInput.addEventListener("input",renderGuides);
+    renderGuides();
+
+    function drawTrend(key){
+      const d = seasonData[key];
+      const min=0,max=100;
+      const width=760, left=30, baseY=270, topY=30, usableH=210;
+      const pts = d.points.map((v,i)=>{
+        const x=left+i*(width/(d.points.length-1));
+        const y=baseY-((v-min)/(max-min))*usableH;
+        return {x,y};
+      });
+      const poly = pts.map(p=>`${p.x},${p.y}`).join(" ");
+      const area = `M ${pts[0].x} ${baseY} L ${pts.map(p=>`${p.x} ${p.y}`).join(" L ")} L ${pts[pts.length-1].x} ${baseY} Z`;
+      document.getElementById("trendLine").setAttribute("points",poly);
+      document.getElementById("trendArea").setAttribute("d",area);
+      document.getElementById("trendDots").innerHTML = pts.map((p,i)=>`
+        <circle cx="${p.x}" cy="${p.y}" r="5" fill="#fffdf8" stroke="#214c40" stroke-width="3"/>
+        <text x="${p.x}" y="${p.y-12}" text-anchor="middle" font-size="11" fill="#58645d">${d.points[i]}</text>
+      `).join("");
+      document.getElementById("trendLabels").innerHTML=d.labels.map(x=>`<span>${x}</span>`).join("");
+      document.getElementById("trendSubtitle").textContent=d.subtitle;
+      document.getElementById("trendTag").textContent=d.tag;
+      ["1","2","3","4"].forEach((n,i)=>{
+        document.getElementById(`insight${n}Title`).textContent=d.i[i][0];
+        document.getElementById(`insight${n}Text`).textContent=d.i[i][1];
+      });
+    }
+    document.getElementById("seasonNav").addEventListener("click",(e)=>{
+      if(!e.target.classList.contains("season-chip")) return;
+      document.querySelectorAll(".season-chip").forEach(b=>b.classList.remove("active"));
+      e.target.classList.add("active");
+      drawTrend(e.target.dataset.season);
+    });
+    drawTrend("summer");
+
+    document.getElementById("themeBtn").addEventListener("click",()=>{
+      const dark = document.body.dataset.theme==="dark";
+      document.body.dataset.theme = dark ? "light" : "dark";
+      document.getElementById("themeBtn").textContent = dark ? "夜间模式" : "日间模式";
+      if(!dark){
+        document.documentElement.style.setProperty("--bg","#111714");
+        document.documentElement.style.setProperty("--paper","#18211d");
+        document.documentElement.style.setProperty("--ink","#eef3ef");
+        document.documentElement.style.setProperty("--muted","#9ba8a1");
+        document.documentElement.style.setProperty("--line","#2b3630");
+      }else{
+        document.documentElement.style.setProperty("--bg","#f5f3ed");
+        document.documentElement.style.setProperty("--paper","#fffdf8");
+        document.documentElement.style.setProperty("--ink","#18211d");
+        document.documentElement.style.setProperty("--muted","#6c746f");
+        document.documentElement.style.setProperty("--line","#dfe3dc");
+      }
+    });
+  </script>
+</body>
+</html>

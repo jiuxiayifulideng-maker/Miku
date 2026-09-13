@@ -1,0 +1,22 @@
+SeasonTrip backend architecture
+
+seasontrip_backend/
+├─ src/
+│  ├─ server.js
+│  ├─ db.js
+│  ├─ auth.js
+│  ├─ middleware/auth.js
+│  └─ routes/
+│     ├─ auth.js
+│     ├─ public.js
+│     └─ admin.js
+├─ public/
+│  ├─ index.html
+│  └─ admin/
+│     ├─ login.html
+│     └─ index.html
+├─ data/
+│  └─ seasontrip.db (启动后自动创建)
+├─ .env.example
+├─ package.json
+└─ README.md
