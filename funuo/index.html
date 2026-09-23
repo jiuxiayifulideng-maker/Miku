@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#dcecf1">
+<meta name="description" content="弗糯糯｜弗洛洛二创主题体验网站">
+<title>弗糯糯｜A Little World</title>
+<style>
+:root{--mist:#dcecf1;--blue:#b8d4de;--cream:#fffaf7;--pink:#f4d6d9;--red:#d83d3d;--ink:#26353c;--soft:#6c7b81;--dark:#202c32;--shadow:0 24px 80px rgba(35,52,59,.13)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#eef7f9,#fffaf7 50%,#eef6f7);overflow-x:hidden}a{text-decoration:none;color:inherit}button{font:inherit}
+#particles{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.55}.grain{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.035;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.2'/%3E%3C/svg%3E")}
+header{position:fixed;left:0;right:0;top:0;z-index:30;height:72px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;transition:.35s}.scrolled{background:rgba(255,250,247,.72);backdrop-filter:blur(16px);box-shadow:0 8px 25px rgba(35,52,59,.05)}
+.logo{font-weight:800;letter-spacing:.18em;font-size:14px}.nav{display:flex;gap:25px;font-size:11px;letter-spacing:.14em;color:#65757c}.nav a:hover{color:var(--red)}
+.sound{border:1px solid rgba(35,52,59,.12);background:rgba(255,255,255,.42);backdrop-filter:blur(10px);border-radius:999px;padding:9px 13px;cursor:pointer;color:var(--ink)}
+main{position:relative;z-index:4}.hero{min-height:100svh;position:relative;display:grid;place-items:center;overflow:hidden;padding:100px 7vw 80px}.hero-bg{position:absolute;inset:-8%;background:radial-gradient(circle at 18% 25%,rgba(255,255,255,.9),transparent 24%),radial-gradient(circle at 82% 18%,rgba(244,214,217,.8),transparent 20%),radial-gradient(circle at 62% 74%,rgba(184,212,222,.76),transparent 34%),linear-gradient(135deg,#f7fcfd,#dcecf1 52%,#f8ecee);transform:translate(var(--bx,0),var(--by,0)) scale(1.05);transition:transform .15s ease-out}.hero-wrap{width:min(1160px,100%);display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}.hero-copy{padding-left:1vw}.kicker,.eyebrow{font-size:10px;letter-spacing:.32em;color:#728289}.kicker{margin-bottom:16px}.title{font:500 clamp(64px,9vw,132px)/.92 Georgia,"Times New Roman",serif;margin:0}.title em{color:var(--red);font-style:normal}.subtitle{font-size:clamp(18px,2vw,26px);margin:22px 0 10px}.desc{color:var(--soft);line-height:1.9;font-size:14px;max-width:520px}.cta{display:inline-flex;gap:10px;align-items:center;border:1px solid rgba(35,52,59,.12);background:rgba(255,255,255,.5);backdrop-filter:blur(10px);padding:13px 16px;border-radius:999px;margin-top:24px;box-shadow:0 10px 30px rgba(35,52,59,.08);transition:.3s}.cta:hover{transform:translateY(-4px)}.dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 15px rgba(216,61,61,.5)}
+.hero-art{display:grid;place-items:center;min-height:560px;position:relative}.hero-card{position:relative;width:min(470px,78vw);aspect-ratio:4/5;padding:16px;border-radius:38px;background:linear-gradient(150deg,rgba(255,255,255,.72),rgba(255,255,255,.24));border:1px solid rgba(255,255,255,.82);box-shadow:var(--shadow);transform:translate(var(--cx,0),var(--cy,0)) rotate(var(--rz,0deg));transition:transform .15s ease-out}.hero-card img{width:100%;height:100%;object-fit:contain;display:block;border-radius:28px;filter:drop-shadow(0 24px 32px rgba(35,52,59,.16))}.badge{position:absolute;background:rgba(255,255,255,.72);backdrop-filter:blur(12px);padding:8px 11px;border-radius:999px;font-size:10px;letter-spacing:.1em;box-shadow:0 10px 22px rgba(35,52,59,.1)}.b1{right:-4%;top:10%;animation:float 5s ease-in-out infinite}.b2{left:-7%;bottom:12%;animation:float 6s ease-in-out infinite reverse}.b3{left:-9%;top:46%;animation:float 7s ease-in-out infinite 1s}.scroll{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:11px;align-items:center;font-size:10px;letter-spacing:.2em;color:#6e7d83}.scroll span{width:1px;height:36px;background:#89979c}
+section{padding:118px 7vw;position:relative}.wrap{max-width:1160px;margin:auto}.head{display:flex;justify-content:space-between;gap:32px;align-items:end;margin-bottom:42px}.head h2{font:500 clamp(44px,6vw,84px)/.98 Georgia,"Times New Roman",serif;margin:4px 0 0}.head p{max-width:480px;color:var(--soft);font-size:14px;line-height:1.9}.reveal{opacity:0;transform:translateY(34px);transition:.85s cubic-bezier(.2,.7,.2,1)}.reveal.show{opacity:1;transform:none}
+.profile{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}.portrait{min-height:500px;border-radius:34px;background:radial-gradient(circle at 50% 30%,#fff,transparent 48%),linear-gradient(135deg,#e9f4f7,#f7e9eb);display:grid;place-items:center;box-shadow:var(--shadow);transform-style:preserve-3d}.portrait img{width:78%;max-width:440px;object-fit:contain;transform:translateZ(40px);filter:drop-shadow(0 24px 30px rgba(35,52,59,.12))}.profile-text h3{font:500 54px Georgia,serif;margin:0 0 16px}.profile-text p{color:var(--soft);font-size:14px;line-height:2}.stats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}.stat{padding:17px;border-radius:18px;background:rgba(255,255,255,.66);border:1px solid rgba(35,52,59,.07);transition:.3s}.stat:hover{transform:translateY(-5px);box-shadow:0 16px 28px rgba(35,52,59,.08)}.stat small{display:block;font-size:9px;letter-spacing:.16em;color:#829097;margin-bottom:6px}.stat strong{font-size:14px}
+.story{display:grid;grid-template-columns:1.2fr .8fr;gap:55px;align-items:center}.story-card{padding:42px;border-radius:34px;background:rgba(255,255,255,.68);box-shadow:var(--shadow)}.story-card blockquote{font:500 clamp(30px,4vw,52px)/1.18 Georgia,serif;margin:0 0 18px}.story-card p{color:var(--soft);font-size:14px;line-height:2}.note{padding:22px;border-left:2px solid var(--red);color:#6d7c82;line-height:1.9;font-size:13px}
+.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}.g{overflow:hidden;border-radius:28px;min-height:240px;background:#e9f2f4;position:relative;box-shadow:0 16px 42px rgba(35,52,59,.08)}.g img{width:100%;height:100%;object-fit:cover;display:block;transition:.5s}.g:hover img{transform:scale(1.06)}.g span{position:absolute;left:14px;bottom:14px;background:rgba(255,255,255,.7);backdrop-filter:blur(10px);padding:7px 10px;border-radius:999px;font-size:10px}.g1{grid-column:span 5;min-height:420px}.g2{grid-column:span 7;min-height:300px}.g3,.g4,.g5{grid-column:span 4}
+.games{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.game{padding:26px;border-radius:28px;background:rgba(255,255,255,.72);border:1px solid rgba(35,52,59,.07);box-shadow:0 18px 44px rgba(35,52,59,.08);transition:.35s;cursor:pointer;overflow:hidden;position:relative}.game:hover{transform:translateY(-10px) perspective(900px) rotateX(2deg) rotateY(-2deg)}.game small{letter-spacing:.22em;color:#8a979c}.game h3{font:500 29px Georgia,serif;margin:12px 0}.game p{font-size:13px;line-height:1.8;color:var(--soft)}.game button{border:0;background:var(--dark);color:#fff;padding:10px 15px;border-radius:999px;cursor:pointer}
+.secret{border-radius:34px;background:linear-gradient(135deg,#223039,#405a64);color:white;padding:54px;overflow:hidden;position:relative}.secret:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;right:-120px;top:-160px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 68%)}.secret h3{font:500 50px Georgia,serif;margin:0 0 16px}.secret p{max-width:660px;color:#c5d1d5;line-height:1.9;font-size:14px}.secret .cta{color:white;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
+footer{background:var(--dark);color:#e6eef0;padding:70px 7vw 36px}.footer{max-width:1160px;margin:auto;display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}.footer small{color:#9db0b6;line-height:1.8;max-width:560px;display:block;margin-top:12px}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(17,24,28,.72);backdrop-filter:blur(12px);display:none;place-items:center;padding:20px}.modal.show{display:grid}.modal-box{width:min(860px,100%);max-height:90svh;overflow:auto;background:#fffaf7;border-radius:28px;padding:26px}.modal-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.modal-top h3{margin:0;font:500 34px Georgia,serif}.close{border:0;width:38px;height:38px;border-radius:50%;cursor:pointer;background:#edf2f3}
+.find{height:420px;border-radius:22px;background:radial-gradient(circle at 20% 30%,rgba(255,255,255,.88),transparent 18%),radial-gradient(circle at 80% 20%,rgba(244,214,217,.8),transparent 18%),linear-gradient(135deg,#dcecf1,#f7e9eb);position:relative;overflow:hidden}.target{position:absolute;width:92px;height:92px;display:grid;place-items:center;cursor:pointer;filter:drop-shadow(0 12px 20px rgba(35,52,59,.16))}.target img{width:100%;height:100%;object-fit:contain}.board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.tile{aspect-ratio:1;border:0;border-radius:16px;background:#dcecf1;cursor:pointer;font-size:28px}.tile.open{background:#fff;border:1px solid #d2dde0}.emotions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.emotion{padding:18px;border-radius:18px;background:#edf3f4;text-align:center}.emotion.locked{opacity:.45;filter:grayscale(1)}.emotion .symbol{font-size:31px;margin-bottom:8px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@media(max-width:900px){.nav{display:none}.hero-wrap,.profile,.story{grid-template-columns:1fr}.hero-art{min-height:500px}.games{grid-template-columns:1fr}.head{display:block}.head p{margin-top:18px}.g1,.g2,.g3,.g4,.g5{grid-column:span 1;min-height:300px}.gallery{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){header{height:64px;padding:0 18px}.hero{padding:90px 18px 70px}.title{font-size:66px}.hero-art{min-height:420px}.hero-card{width:84vw}.b1{right:0}.b2{left:0}.b3{left:0}section{padding:82px 18px}.portrait{min-height:420px}.stats{grid-template-columns:1fr}.gallery{grid-template-columns:1fr}.g1,.g2,.g3,.g4,.g5{grid-column:1;min-height:320px}.story-card{padding:26px}.secret{padding:34px 24px}.secret h3{font-size:40px}.emotions{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas><div class="grain"></div>
+
+<header id="header">
+  <a class="logo" href="#home">FNUONUO</a>
+  <nav class="nav"><a href="#character">CHARACTER</a><a href="#story">STORY</a><a href="#gallery">GALLERY</a><a href="#play">PLAY</a></nav>
+  <button class="sound" id="sound">♫ OFF</button>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-wrap">
+    <div class="hero-copy reveal">
+      <div class="kicker">FAN CREATION / A LITTLE WORLD</div>
+      <h1 class="title">弗糯<span>糯</span></h1>
+      <div class="subtitle">今天，也稍微慢一点吧。</div>
+      <p class="desc">一个以弗洛洛为原型的二创主题体验网站。这里有角色、治愈故事、插画、三个轻小游戏，还有一些藏在角落里的小秘密。</p>
+      <a class="cta" href="#character"><i class="dot"></i> ENTER THE WORLD <b>→</b></a>
+    </div>
+    <div class="hero-art reveal">
+      <div class="hero-card" id="heroCard">
+        <img src="assets/funuo.webp" alt="弗糯糯角色视觉">
+        <div class="badge b1">SOFT / 01</div><div class="badge b2">A LITTLE STORY</div><div class="badge b3">✦ FIND ME</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll"><span></span> SCROLL TO EXPLORE</div>
+</section>
+
+<section id="character">
+  <div class="wrap">
+    <div class="head reveal"><div><div class="eyebrow">01 / CHARACTER</div><h2>认识她。</h2></div><p>不急着把所有答案告诉你。慢慢看、慢慢读，也许会发现一个属于弗糯糯的小小世界。</p></div>
+    <div class="profile">
+      <div class="portrait reveal" id="portrait"><img src="assets/funuo.webp" alt="弗糯糯"></div>
+      <div class="profile-text reveal">
+        <div class="eyebrow">PROFILE</div><h3>弗糯糯</h3>
+        <p>她喜欢安静的风、柔和的光，还有那些并不起眼的小小瞬间。这个网站不急着发生惊天动地的大事，只想把一些值得被记住的温柔留在这里。</p>
+        <div class="stats">
+          <div class="stat"><small>MOOD</small><strong>柔和 / 好奇</strong></div><div class="stat"><small>WORLD</small><strong>安静的小世界</strong></div>
+          <div class="stat"><small>LIKES</small><strong>风、光、日常</strong></div><div class="stat"><small>STYLE</small><strong>Q版 / 治愈</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="story" style="background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(220,236,241,.55))">
+  <div class="wrap">
+    <div class="head reveal"><div><div class="eyebrow">02 / STORY</div><h2>今天的风，很轻。</h2></div></div>
+    <div class="story">
+      <article class="story-card reveal"><blockquote>“有时候，什么都不做，也是一种很好的下午。”</blockquote><p>午后的光落在地板上，风从半开的窗边轻轻吹过。弗糯糯坐在那里，看着窗帘一点一点晃动。</p><p>没有必须立刻完成的事情。暂时停下来，也没有关系。</p><p>如果你也刚好累了，就在这里多待一会儿。等风再轻一点，再继续往前走。</p></article>
+      <aside class="reveal"><div class="eyebrow">SHORT NOTE</div><p class="note">这是一个非官方二创主题体验页面。后续可以继续扩充更多短篇、插画、角色档案和隐藏章节。</p></aside>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="head reveal"><div><div class="eyebrow">03 / GALLERY</div><h2>她眼中的世界。</h2></div><p>以提供的角色图作为视觉核心。随着内容扩充，这里可以加入完整的插画、表情与场景收藏。</p></div>
+    <div class="gallery">
+      <div class="g g1 reveal"><img src="assets/funuo.webp"><span>CHARACTER</span></div>
+      <div class="g g2 reveal"><img src="assets/funuo.webp"><span>A LITTLE MOMENT</span></div>
+      <div class="g g3 reveal"><img src="assets/funuo.webp"><span>EXPRESSION</span></div>
+      <div class="g g4 reveal"><img src="assets/funuo.webp"><span>SOFT LIGHT</span></div>
+      <div class="g g5 reveal"><img src="assets/funuo.webp"><span>SECRET</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="play" style="background:linear-gradient(180deg,#eef6f7,#fffaf7)">
+  <div class="wrap">
+    <div class="head reveal"><div><div class="eyebrow">04 / PLAY</div><h2>陪她玩一会儿。</h2></div><p>三个轻量互动：寻找弗糯糯、记忆翻牌、表情图鉴。完成小游戏可以解锁小彩蛋。</p></div>
+    <div class="games">
+      <article class="game reveal" data-game="find"><small>01 / FIND FUNUO</small><h3>找到她。</h3><p>在轻轻移动的风景里找到藏起来的弗糯糯。</p><button>START →</button></article>
+      <article class="game reveal" data-game="memory"><small>02 / MEMORY</small><h3>记住她的小世界。</h3><p>翻开卡片，找到成对的记忆图案。</p><button>START →</button></article>
+      <article class="game reveal" data-game="emotion"><small>03 / EMOTION</small><h3>收集她的表情。</h3><p>探索网站并完成互动，逐渐点亮表情图鉴。</p><button>OPEN ARCHIVE →</button></article>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="secret reveal">
+      <div class="eyebrow" style="color:#aec0c6">05 / SECRET</div><h3>还有一些小秘密。</h3>
+      <p>试着点击页面右上角的声音按钮，或者在页面里寻找红色的小细节。真正的彩蛋不会写在菜单上。</p>
+      <button class="cta" id="secretBtn"><i class="dot"></i> TRY YOUR LUCK <b>↗</b></button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="footer">
+    <div><div class="logo">FNUONUO</div><div style="margin-top:12px">下次再来看看吧。</div></div>
+    <div><div class="eyebrow" style="color:#aec0c6">FAN CREATION NOTICE</div><small>「弗糯糯」为非官方二创主题体验网站。本页面以《鸣潮》弗洛洛相关视觉作为创作参考，不代表官方立场，也未与相关版权方建立隶属关系。角色与相关知识产权归其各自权利人所有。</small></div>
+  </div>
+</footer>
+
+<div class="modal" id="modal"><div class="modal-box"><div class="modal-top"><h3 id="modalTitle">Play</h3><button class="close" id="close">×</button></div><div id="modalBody"></div></div></div>
+
+<script>
+const img='assets/funuo.webp';
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+$('#header').classList.remove('scrolled');
+addEventListener('scroll',()=>$('#header').classList.toggle('scrolled',scrollY>18));
+
+document.addEventListener('pointermove',e=>{
+  const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
+  $('#heroBg').style.setProperty('--bx',x*-18+'px');$('#heroBg').style.setProperty('--by',y*-18+'px');
+  $('#heroCard').style.setProperty('--cx',x*16+'px');$('#heroCard').style.setProperty('--cy',y*16+'px');$('#heroCard').style.setProperty('--rz',(x*2-y*1.4)+'deg');
+});
+const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.12});
+$$('.reveal').forEach(e=>io.observe(e));
+
+const c=$('#particles'),ctx=c.getContext('2d');let pts=[];
+function resize(){const d=Math.min(devicePixelRatio||1,2);c.width=innerWidth*d;c.height=innerHeight*d;c.style.width=innerWidth+'px';c.style.height=innerHeight+'px';ctx.setTransform(d,0,0,d,0,0);pts=Array.from({length:Math.min(65,Math.floor(innerWidth/20))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.6+.4,v:Math.random()*.22+.05,a:Math.random()*.45+.15}))}
+function loop(){ctx.clearRect(0,0,innerWidth,innerHeight);for(const p of pts){p.y-=p.v;if(p.y<0){p.y=innerHeight;p.x=Math.random()*innerWidth}ctx.globalAlpha=p.a;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='#758b93';ctx.fill()}requestAnimationFrame(loop)}
+addEventListener('resize',resize);resize();loop();
+
+let audioOn=false,ac;
+function tone(f=660,d=.12,v=.025){if(!audioOn)return;ac??=new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}
+$('#sound').onclick=()=>{audioOn=!audioOn;$('#sound').textContent=audioOn?'♫ ON':'♫ OFF';if(audioOn)tone()};
+
+$('#portrait').addEventListener('pointermove',e=>{const r=$('#portrait').getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;$('#portrait').style.transform='perspective(900px) rotateX('+(-y*4)+'deg) rotateY('+(x*5)+'deg)'});
+$('#portrait').addEventListener('pointerleave',()=>$('#portrait').style.transform='');
+
+function openModal(title,body){$('#modalTitle').textContent=title;$('#modalBody').innerHTML=body;$('#modal').classList.add('show')}
+function closeModal(){$('#modal').classList.remove('show')}
+$('#close').onclick=closeModal;$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+
+function findGame(){
+  openModal('找到弗糯糯','<p class="status">15秒内找到她。</p><div class="find" id="find"></div><p id="findStatus" class="status">剩余 15 秒</p>');
+  const area=$('#find'),t=document.createElement('div');t.className='target';t.innerHTML='<img src="'+img+'" alt="">';area.appendChild(t);
+  function move(){t.style.left=Math.random()*(area.clientWidth-92)+'px';t.style.top=Math.random()*(area.clientHeight-92)+'px'}move();
+  let left=15;const timer=setInterval(()=>{left--;if($('#findStatus'))$('#findStatus').textContent='剩余 '+left+' 秒';if(left<=0){clearInterval(timer);if($('#findStatus'))$('#findStatus').textContent='她又藏起来啦，再试一次？'}},1000);
+  t.onclick=()=>{clearInterval(timer);tone(880,.18,.04);$('#findStatus').textContent='找到了！一个小彩蛋已被发现 ✦';t.style.transform='scale(1.2)'}
+}
+function memoryGame(){
+  openModal('记忆翻牌','<p class="status">找到4组相同图案。</p><div class="board" id="board"></div><p id="mstat" class="status">0 / 4</p>');
+  const arr=['✦','☁','♡','◌','✦','☁','♡','◌'].sort(()=>Math.random()-.5),board=$('#board');let first=null,lock=false,match=0;
+  arr.forEach(v=>{const b=document.createElement('button');b.className='tile';b.textContent='?';b.dataset.v=v;b.onclick=()=>{if(lock||b.classList.contains('open'))return;b.classList.add('open');b.textContent=v;if(!first){first=b;return}lock=true;if(first.dataset.v===b.dataset.v){match++;$('#mstat').textContent=match+' / 4';first=null;lock=false;if(match===4){tone(1000,.2,.04);$('#mstat').textContent='全部完成 ✦'}}else{setTimeout(()=>{first.classList.remove('open');b.classList.remove('open');first.textContent='?';b.textContent='?';first=null;lock=false},520)}};board.appendChild(b)})
+}
+function emotionGame(){openModal('表情图鉴','<p class="status">已点亮 3 / 8。完成游戏后继续解锁。</p><div class="emotions">'+[['☺','微笑',1],['♡','害羞',1],['☼','开心',1],['☁','困倦',0],['✦','惊讶',0],['…','疑惑',0],['!','认真',0],['◌','发呆',0]].map(e=>'<div class="emotion '+(e[2]?'':'locked')+'"><div class="symbol">'+(e[2]?e[0]:'🔒')+'</div><b>'+e[1]+'</b></div>').join('')+'</div>')}
+$$('.game').forEach(g=>g.onclick=()=>({find:findGame,memory:memoryGame,emotion:emotionGame}[g.dataset.game])());
+let secretClicks=0;$('#secretBtn').onclick=()=>{secretClicks++;tone(520,.12,.025);if(secretClicks<3){$('#secretBtn').lastChild.textContent=' NEXT '+(3-secretClicks)}else{openModal('你找到这里了。','<div style="padding:30px 6px;text-align:center"><div style="font:500 44px Georgia,serif;margin-bottom:14px">今天的秘密是：</div><p style="color:#6c7b81;line-height:1.9">就算什么都没有发生，平静的一天也值得被记住。</p></div>')}};
+</script>
+</body>
+</html>
